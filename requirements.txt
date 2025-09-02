@@ -1,0 +1,8 @@
+Flask
+requests
+google-cloud-vision
+google-auth
+google-auth-oauthlib
+pytesseract
+Pillow
+google-cloud-secret-manager
