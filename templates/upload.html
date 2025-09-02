@@ -1,0 +1,51 @@
+<!-- upload.html esta pagina permite al usuario subir un recibo -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ticketapp - subir recibo</title>
+</head>
+<body>
+    <h1>sesión iniciada</h1>
+    <p>selecciona un archivo de recibo para procesar y guardar en google sheets</p>
+
+    <!-- formulario para subir un archivo -->
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="image" required>
+        <button type="submit">procesar recibo</button>
+    </form>
+
+    <!-- boton que se mostrara despues de procesar -->
+    <button id="openSheetBtn" style="display:none;">abrir hoja de cálculo</button>
+
+    <script>
+    // se maneja el evento de envio del formulario
+    document.getElementById("uploadForm").onsubmit = async function(e) {
+        // se previene el comportamiento predeterminado
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        // se envia el archivo a la api
+        const response = await fetch("/api/process", { method: "POST", body: formData });
+        // se procesa la respuesta
+        const result = await response.json();
+
+        // si la respuesta tiene un id de hoja de calculo
+        if(result.spreadsheet_id){
+            // se muestra el boton para abrir la hoja
+            const btn = document.getElementById("openSheetBtn");
+            btn.style.display = "inline-block";
+            // se asigna la accion para abrir la url
+            btn.onclick = () => {
+                window.open(`https://docs.google.com/spreadsheets/d/${result.spreadsheet_id}`, "_blank");
+            }
+            // se muestra un mensaje de alerta
+            alert(result.message);
+        } else {
+            // si no hay id se muestra un mensaje de error
+            alert(result.message);
+        }
+    };
+    </script>
+</body>
+</html>
