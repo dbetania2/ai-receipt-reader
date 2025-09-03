@@ -1,5 +1,9 @@
 # main_controller.py esta clase de encarga de manejar las rutas y la logica de la api
 
+#Necesito modularizar mas este archivo , osea tener mas archivo con menos codigo:
+#esto es debido a que cada diviision se le agregaran llamadas a funciones especificas para errores que se repitan.entonces si no lo dividov quedara un archivo largo:
+#el objetivo es el siguiente:
+#Emantener funcional el achivo maincontroller hasta que se tenga la estructura nueva completa:, esto es para mantenerlo por las dudas de que no funcione  los demasarchivos creados.Una vez creada la modularizacion se comenta el archivo que no tenia todo modularizado para probar si funciona.
 from flask import Blueprint, jsonify, request, redirect, session, url_for, render_template
 import os, uuid
 
