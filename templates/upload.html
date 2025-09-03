@@ -1,48 +1,65 @@
-<!-- upload.html esta pagina permite al usuario subir un recibo -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>ticketapp - subir recibo</title>
+    <title>TicketApp - Subir Recibo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>sesión iniciada</h1>
-    <p>selecciona un archivo de recibo para procesar y guardar en google sheets</p>
+    <h1>Sesión iniciada</h1>
+    <p>Selecciona un archivo de recibo para procesar y guardar en Google Sheets</p>
 
     <!-- formulario para subir un archivo -->
     <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="image" required>
-        <button type="submit">procesar recibo</button>
+        <input type="file" name="image" id="imageInput" accept="image/*" required>
+        
+        <!-- contenedor de previsualización -->
+        <div id="previewContainer">
+            <img id="previewImage" src="" alt="Previsualización del recibo" style="display:none;">
+        </div>
+
+        <button type="submit">Procesar recibo</button>
     </form>
 
     <!-- boton que se mostrara despues de procesar -->
-    <button id="openSheetBtn" style="display:none;">abrir hoja de cálculo</button>
+    <button id="openSheetBtn" style="display:none;">Abrir hoja de cálculo</button>
 
     <script>
-    // se maneja el evento de envio del formulario
+    // Previsualización de la imagen seleccionada
+    const imageInput = document.getElementById("imageInput");
+    const previewImage = document.getElementById("previewImage");
+
+    imageInput.addEventListener("change", function() {
+        const file = this.files[0];
+        if(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                previewImage.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewImage.src = "";
+            previewImage.style.display = "none";
+        }
+    });
+
+    // Manejo del envío del formulario
     document.getElementById("uploadForm").onsubmit = async function(e) {
-        // se previene el comportamiento predeterminado
         e.preventDefault();
         const formData = new FormData(this);
 
-        // se envia el archivo a la api
         const response = await fetch("/api/process", { method: "POST", body: formData });
-        // se procesa la respuesta
         const result = await response.json();
 
-        // si la respuesta tiene un id de hoja de calculo
         if(result.spreadsheet_id){
-            // se muestra el boton para abrir la hoja
             const btn = document.getElementById("openSheetBtn");
             btn.style.display = "inline-block";
-            // se asigna la accion para abrir la url
             btn.onclick = () => {
                 window.open(`https://docs.google.com/spreadsheets/d/${result.spreadsheet_id}`, "_blank");
             }
-            // se muestra un mensaje de alerta
             alert(result.message);
         } else {
-            // si no hay id se muestra un mensaje de error
             alert(result.message);
         }
     };
