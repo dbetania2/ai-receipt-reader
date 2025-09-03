@@ -10,3 +10,4 @@ __pycache__/
 .env
 token.pickle
 ticketapp.db
+receipt_debug/
