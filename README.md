@@ -35,12 +35,12 @@ Esta versión es la evolución de un proyecto original de escritorio creado en *
         * `normalized_output.json` → resultado final normalizado antes de guardarlo en Sheets.
     * Esto permite verificar cada paso del flujo de datos durante el desarrollo.
 
-* **Arquitectura Modular**
-    * Presenta una separación clara entre servicios:
-        * Servicios de OCR (`OCRService`)
-        * Procesamiento de texto (`GeminiInterface`)
-        * Gestión de Google Sheets (`GoogleSheetsService`)
-    * Esta estructura facilita las pruebas unitarias, la escalabilidad y el mantenimiento del código.
+* **Arquitectura Limpia (Clean Architecture)**
+    * El proyecto está diseñado siguiendo los principios de la arquitectura limpia, separando las preocupaciones del negocio de la tecnología de implementación.
+    * Presenta una estructura de capas clara que facilita la escalabilidad, la mantenibilidad y las pruebas unitarias:
+        * Capa de Aplicación: Lógica de negocio de alto nivel.
+        * Capa de Infraestructura: Manejo de servicios externos (APIs, bases de datos).
+        * Capa de Dominio: Entidades y reglas de negocio.
 
 ---
 
@@ -51,3 +51,6 @@ Actualmente, la aplicación es funcional en entorno local, con pruebas completas
 Está preparada para despliegue en **Google Cloud Platform**, con:
 * Configuración de credenciales para Cloud Vision y Google Sheets.
 * Logs y depuración listos para monitorizar la ejecución en producción.
+![alt text](image.png)
+![alt text](image-2.png)
+![alt text](image-1.png)
